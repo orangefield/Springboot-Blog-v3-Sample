@@ -1,4 +1,4 @@
-package site.orangefield.blogsample.domain.like;
+package site.orangefield.blogsample.domain.love;
 
 import java.time.LocalDateTime;
 
@@ -19,7 +19,7 @@ import site.orangefield.blogsample.domain.user.User;
 
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-public class Like {
+public class Love {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
