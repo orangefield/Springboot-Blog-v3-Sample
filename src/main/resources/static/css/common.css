@@ -1,3 +1,9 @@
+.my_error_box {
+    background-color: #ff958c;
+    font-style: italic;
+    padding: 15px;
+}
+
 .my_navbar {
     display: flex;
     justify-content: space-between;

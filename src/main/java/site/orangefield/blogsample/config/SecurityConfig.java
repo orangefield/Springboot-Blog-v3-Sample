@@ -29,6 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .usernameParameter("uname") // Security가 확인하는 키값을 바꾸고 싶을 때
                 // .passwordParameter("pwd")
                 .loginProcessingUrl("/login") // /login 요청이 오면 로그인 프로세스 자동 진행(x-www-form-urlencoded)
+                // .failureHandler(null)
+                // .successHandler(null)
                 .defaultSuccessUrl("/");
     }
 
