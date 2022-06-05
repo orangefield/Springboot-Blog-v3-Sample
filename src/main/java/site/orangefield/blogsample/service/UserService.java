@@ -1,5 +1,7 @@
 package site.orangefield.blogsample.service;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,16 @@ public class UserService {
     // DI
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public boolean 유저네임중복체크(String username) {
+        Optional<User> userOp = userRepository.findByUsername(username);
+
+        if (userOp.isPresent()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     @Transactional
     public void 회원가입(User user) {
