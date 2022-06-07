@@ -1,22 +1,19 @@
 package site.orangefield.blogsample.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
-import site.orangefield.blogsample.handler.ex.CustomException;
 import site.orangefield.blogsample.service.UserService;
+import site.orangefield.blogsample.util.UtilValid;
 import site.orangefield.blogsample.web.dto.JoinReqDto;
+import site.orangefield.blogsample.web.dto.PasswordResetReqDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -41,17 +38,26 @@ public class UserController {
         return new ResponseEntity<>(isNotSame, HttpStatus.OK);
     }
 
+    @GetMapping("/user/password-reset-form")
+    public String passwordResetForm() {
+        return "/user/passwordResetForm";
+    }
+
+    @PostMapping("/user/password-reset")
+    public String passwordReset(@Valid PasswordResetReqDto passwordResetReqDto, BindingResult bindingResult) {
+
+        UtilValid.요청에러처리(bindingResult);
+
+        // 핵심 로직
+        userService.패스워드초기화(passwordResetReqDto);
+
+        return "redirect:/login-form";
+    }
+
     @PostMapping("/join")
     public String join(@Valid JoinReqDto joinReqDto, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            Map<String, String> errorMap = new HashMap<>(); // 에러는 여러 개
-            for (FieldError fe : bindingResult.getFieldErrors()) { // 어느 변수에서 터졌는지
-                errorMap.put(fe.getField(), fe.getDefaultMessage());
-            }
-            // throw에서 Data 리턴인지, html 리턴인지 구분해서 터트리기
-            throw new CustomException(errorMap.toString());
-        }
+        UtilValid.요청에러처리(bindingResult);
 
         // 핵심 로직
         userService.회원가입(joinReqDto.toEntity());
