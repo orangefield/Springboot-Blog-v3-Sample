@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import site.orangefield.blogsample.handler.LoginSuccessHandler;
+
 @EnableWebSecurity // 해당 파일로 시큐리티를 활성화
 @Configuration // IoC에 등록
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,8 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // .passwordParameter("pwd")
                 .loginProcessingUrl("/login") // /login 요청이 오면 로그인 프로세스 자동 진행(x-www-form-urlencoded)
                 // .failureHandler(null)
-                // .successHandler(null)
-                .defaultSuccessUrl("/");
+                .successHandler(new LoginSuccessHandler()); // 로그인 성공하면
     }
 
 }
