@@ -28,8 +28,9 @@
     <nav class="drawer-nav" role="navigation">
         <ul class="drawer-menu">
             <li><a class="drawer-brand" href="#">HOME</a></li>
-            <li><a class="drawer-menu-item" href="#">Nav1</a></li>
-            <li><a class="drawer-menu-item" href="#">Nav2</a></li>
+            {{#postRespDto.categories}}
+            <li><a class="drawer-menu-item" href="/user/{{user.id}}/post?categoryId={{id}}">{{title}}</a></li>
+            {{/postRespDto.categories}}
         </ul>
     </nav>
 
@@ -47,7 +48,7 @@
 
         <div class="my_navbar_title">FIELD</div>
 
-        <!-- Navbar text-->
+        <!-- Navbar text -->
         <ul class="navbar-nav">
 
             {{#principal}}
