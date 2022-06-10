@@ -4,6 +4,11 @@
     padding: 15px;
 }
 
+.my_fakeimg {
+    height: 200px;
+    background-color: #b9b9b9;
+}
+
 .my_navbar {
     display: flex;
     justify-content: space-between;
@@ -54,7 +59,7 @@
     padding: 20px;
     border-radius: 10px;
     border: none;
-    background-color: rgb(185, 185, 185);
+    background-color: #b9b9b9;
     color: white;
     margin: 5px 0;
 } 
@@ -62,3 +67,27 @@
 .my_secondary_btn:hover {
     background-color: #f36f63;
 }
+
+.my_success_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: #f9a025;
+    color: white;
+    margin: 5px 0;
+}
+
+.my_success_btn:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.my_elipse {
+    overflow: hidden;
+    text-overflow: ellipsis;
+} 
