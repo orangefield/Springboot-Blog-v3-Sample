@@ -9,6 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import site.orangefield.blogsample.domain.category.Category;
+import site.orangefield.blogsample.domain.post.Post;
+import site.orangefield.blogsample.domain.user.User;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,4 +27,16 @@ public class PostWriteReqDto {
     private MultipartFile thumbnailFile; // 공백만 허용
     @NotNull
     private String content; // 공백만 허용
+
+    public Post toEntity(String thumbnail, User principal, Category category) {
+        Post post = new Post();
+
+        post.setTitle(title);
+        post.setContent(content);
+        post.setThumbnail(thumbnail);
+        post.setUser(principal);
+        post.setCategory(category);
+
+        return post;
+    }
 }

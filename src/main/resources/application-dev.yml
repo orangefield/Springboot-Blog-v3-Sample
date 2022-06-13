@@ -44,4 +44,7 @@ spring:
 
   output:
     ansi:
-      enabled: always 
+      enabled: always
+
+file:
+  path: C:/upload/
