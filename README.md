@@ -24,7 +24,7 @@ GRANT ALL PRIVILEGES ON bluedb.* TO 'blue'@'%';
 - https://livere.com/
 
 ### 5. 메뉴 - Drawer
-https://git.blivesta.com/drawer/
+- https://git.blivesta.com/drawer/
 
 
 ### 6. 주소 설계
@@ -92,6 +92,6 @@ updateDate
 
 
 ### Gradle depenency update
-'''txt
+```txt
 ./gradlew --refresh-dependencie
-'''
+```
