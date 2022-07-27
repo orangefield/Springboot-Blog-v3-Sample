@@ -22,6 +22,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import site.orangefield.blogsample.domain.category.Category;
 import site.orangefield.blogsample.domain.user.User;
+import site.orangefield.blogsample.util.UtilPost;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -61,5 +62,9 @@ public class Post {
     public String getFormatCreateDate() { // mustache는 getter를 찾는다
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-DD HH:mm");
         return createDate.format(formatter);
+    }
+
+    public String getFormatContent() {
+        return UtilPost.getContentWithoutImg(content);
     }
 }

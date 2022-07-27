@@ -1,6 +1,6 @@
 .my_footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 30px;
     border-top: 1px solid #b9b9b9;
 }
