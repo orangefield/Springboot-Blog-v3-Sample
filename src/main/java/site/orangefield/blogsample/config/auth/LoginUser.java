@@ -15,7 +15,6 @@ public class LoginUser implements UserDetails { // 필요한 것만 받을 수 �
 
     private final User user;
 
-    // 유튜브 시큐리티
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

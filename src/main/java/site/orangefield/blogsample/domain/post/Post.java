@@ -1,6 +1,7 @@
 package site.orangefield.blogsample.domain.post;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,7 +41,7 @@ public class Post {
     @Column(nullable = true)
     private String content;
 
-    @Column(length = 200, nullable = false)
+    @Column(length = 200, nullable = true)
     private String thumbnail;
 
     @JoinColumn(name = "userId")
@@ -55,4 +56,10 @@ public class Post {
     private LocalDateTime createDate;
     @LastModifiedDate // update할 때 동작
     private LocalDateTime updateDate;
+
+    // yyyy-MM-dd HH:mm:ss
+    public String getFormatCreateDate() { // mustache는 getter를 찾는다
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-DD HH:mm");
+        return createDate.format(formatter);
+    }
 }

@@ -23,8 +23,7 @@ public class PostWriteReqDto {
     @Size(min = 1, max = 60)
     @NotBlank
     private String title;
-    @NotNull
-    private MultipartFile thumbnailFile; // 공백만 허용
+    private MultipartFile thumbnailFile; // Null 허용
     @NotNull
     private String content; // 공백만 허용
 

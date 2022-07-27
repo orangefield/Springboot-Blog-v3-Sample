@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import lombok.RequiredArgsConstructor;
 import site.orangefield.blogsample.service.UserService;
 import site.orangefield.blogsample.util.UtilValid;
-import site.orangefield.blogsample.web.dto.JoinReqDto;
-import site.orangefield.blogsample.web.dto.PasswordResetReqDto;
+import site.orangefield.blogsample.web.dto.user.JoinReqDto;
+import site.orangefield.blogsample.web.dto.user.PasswordResetReqDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -33,6 +33,7 @@ public class UserController {
         return "/user/joinForm";
     }
 
+    // ResponseEntity는 @ResponseBody를 붙이지 않아도 data 리턴
     @GetMapping("/api/user/username-same-check")
     public ResponseEntity<?> usernameSameCheck(String username) {
         boolean isNotSame = userService.유저네임중복체크(username); // true(같지 않다)

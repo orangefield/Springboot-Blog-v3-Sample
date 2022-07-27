@@ -11,7 +11,7 @@ import site.orangefield.blogsample.domain.user.User;
 import site.orangefield.blogsample.domain.user.UserRepository;
 import site.orangefield.blogsample.handler.ex.CustomException;
 import site.orangefield.blogsample.util.email.EmailUtil;
-import site.orangefield.blogsample.web.dto.PasswordResetReqDto;
+import site.orangefield.blogsample.web.dto.user.PasswordResetReqDto;
 
 @RequiredArgsConstructor
 @Service

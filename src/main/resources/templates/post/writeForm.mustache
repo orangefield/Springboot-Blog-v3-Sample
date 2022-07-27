@@ -10,6 +10,8 @@
 <div class="container">
 
     <form action="/s/post" method="post" enctype="multipart/form-data" onsubmit="return getQuill()">
+
+        <!-- 카테고리 선택 시작 -->
         <div class="form-group">
             <select class="form-control" name="categoryId">
                 {{#categories}}
@@ -17,6 +19,8 @@
                 {{/categories}}
             </select>
         </div>
+        <!-- 카테고리 선택 끝 -->
+
         <input type="text" placeholder="Enter Title" name="title" class="form-control">
         <div class="form-control d-flex justify-content-end">
             <div>썸네일 사진 등록 : <input type="file" name="thumbnailFile"></div>

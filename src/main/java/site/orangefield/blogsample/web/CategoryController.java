@@ -33,7 +33,9 @@ public class CategoryController {
     }
 
     @PostMapping("/s/category")
-    public @ResponseBody String write(@Valid CategoryWriteReqDto categoryWriteReqDto, BindingResult bindingResult,
+    public @ResponseBody String write(
+            @Valid CategoryWriteReqDto categoryWriteReqDto,
+            BindingResult bindingResult,
             @AuthenticationPrincipal LoginUser loginUser) {
 
         UtilValid.요청에러처리(bindingResult);

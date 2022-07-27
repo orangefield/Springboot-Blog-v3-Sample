@@ -1,4 +1,4 @@
-package site.orangefield.blogsample.web.dto;
+package site.orangefield.blogsample.web.dto.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

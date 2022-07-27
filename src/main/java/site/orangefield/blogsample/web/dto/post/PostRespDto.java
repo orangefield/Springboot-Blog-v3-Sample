@@ -2,6 +2,8 @@ package site.orangefield.blogsample.web.dto.post;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,6 @@ import site.orangefield.blogsample.domain.post.Post;
 @Data
 public class PostRespDto {
 
-    private List<Post> posts;
+    private Page<Post> posts;
     private List<Category> categories;
 }
