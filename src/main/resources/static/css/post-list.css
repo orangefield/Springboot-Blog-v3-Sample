@@ -1,3 +1,13 @@
+.my_paging_number_box {
+    outline: 1px solid #b9b9b9;
+    padding: 0 5px;
+}
+
+.my_paging_number_box:hover {
+    background-color: #f9a025;
+}
+
+
 .my_post_list_item {
     display: flex;
     border: 1px solid #b9b9b9;
@@ -18,3 +28,4 @@
 .my_post_list_item_right div {
     margin-bottom: 5px;
 } 
+
