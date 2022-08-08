@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.orangefield.blogsample.domain.user.User;
 import site.orangefield.blogsample.domain.user.UserRepository;
+import site.orangefield.blogsample.domain.visit.Visit;
+import site.orangefield.blogsample.domain.visit.VisitRepository;
 import site.orangefield.blogsample.handler.ex.CustomException;
 import site.orangefield.blogsample.util.email.EmailUtil;
 import site.orangefield.blogsample.web.dto.user.PasswordResetReqDto;
@@ -21,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailUtil emailUtil;
+    private final VisitRepository visitRepository;
 
     public boolean 유저네임중복체크(String username) {
         Optional<User> userOp = userRepository.findByUsername(username);
@@ -35,11 +38,18 @@ public class UserService {
     @Transactional
     public void 회원가입(User user) {
 
+        // 1. save 한 번
         String rawPassword = user.getPassword(); // 1234
         String encPassword = bCryptPasswordEncoder.encode(rawPassword); // hash 알고리즘
         user.setPassword(encPassword);
 
-        userRepository.save(user);
+        User userEntity = userRepository.save(user);
+
+        // 2. save 두 번
+        Visit visit = new Visit();
+        visit.setTotalCount(0L);
+        visit.setUser(userEntity);
+        visitRepository.save(visit);
     }
 
     @Transactional

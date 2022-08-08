@@ -43,6 +43,21 @@
     position:  relative;
 }
 
+.my_nav_slider {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.my_nav_slider_visit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 100px;
+    border-top: 1px solid #b9b9b9;
+}
+
 .my_dropdown_menu {
     position: absolute !important;
 }
