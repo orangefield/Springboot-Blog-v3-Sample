@@ -103,7 +103,8 @@ public class PostService {
                 pageOwnerId,
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
-                pageNumbers);
+                pageNumbers,
+                0L);
 
         // 방문자 카운터 증가
         Optional<User> pageOwnerOp = userRepository.findById(pageOwnerId);
@@ -113,6 +114,10 @@ public class PostService {
             Optional<Visit> visitOp = visitRepository.findById(pageOwnerEntity.getId());
             if (visitOp.isPresent()) {
                 Visit visitEntity = visitOp.get();
+
+                // DTO에 방문자 수 담기 (request에서 ip주소를 받아서 동일하면 증가시키지 않는 로직 필요)
+                postRespDto.setTotalCount(visitEntity.getTotalCount());
+
                 Long totalCount = visitEntity.getTotalCount();
                 visitEntity.setTotalCount(totalCount + 1);
             } else {
@@ -142,7 +147,31 @@ public class PostService {
                 pageOwnerId,
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
-                pageNumbers);
+                pageNumbers,
+                0L);
+
+        // 방문자 카운터 증가
+        Optional<User> pageOwnerOp = userRepository.findById(pageOwnerId);
+
+        if (pageOwnerOp.isPresent()) {
+            User pageOwnerEntity = pageOwnerOp.get();
+            Optional<Visit> visitOp = visitRepository.findById(pageOwnerEntity.getId());
+            if (visitOp.isPresent()) {
+                Visit visitEntity = visitOp.get();
+
+                // DTO에 방문자 수 담기 (request에서 ip주소를 받아서 동일하면 증가시키지 않는 로직 필요)
+                postRespDto.setTotalCount(visitEntity.getTotalCount());
+
+                Long totalCount = visitEntity.getTotalCount();
+                visitEntity.setTotalCount(totalCount + 1);
+            } else {
+                log.error("겁나 심각", "회원가입할 때 Visit이 안 만들어지는 심각한 오류가 있음");
+                // sms 메시지 전송, email 전송, file 쓰기...
+                throw new CustomException("일시적 문제가 생겼습니다. 관리자에게 문의해주세요");
+            }
+        } else {
+            throw new CustomException("해당 블로그는 없는 페이지입니다.");
+        }
 
         return postRespDto;
     }
