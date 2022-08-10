@@ -17,13 +17,11 @@ import site.orangefield.blogsample.domain.category.CategoryRepository;
 import site.orangefield.blogsample.domain.post.Post;
 import site.orangefield.blogsample.domain.post.PostRepository;
 import site.orangefield.blogsample.domain.user.User;
-import site.orangefield.blogsample.domain.user.UserRepository;
 import site.orangefield.blogsample.domain.visit.Visit;
 import site.orangefield.blogsample.domain.visit.VisitRepository;
 import site.orangefield.blogsample.handler.ex.CustomApiException;
 import site.orangefield.blogsample.handler.ex.CustomException;
 import site.orangefield.blogsample.util.UtilFileUpload;
-import site.orangefield.blogsample.util.UtilPost;
 import site.orangefield.blogsample.web.dto.post.PostDetailRespDto;
 import site.orangefield.blogsample.web.dto.post.PostRespDto;
 import site.orangefield.blogsample.web.dto.post.PostWriteReqDto;
@@ -39,15 +37,14 @@ public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
     private final VisitRepository visitRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public void 게시글삭제(Integer id, User principal) {
         // 게시글 확인
-        Post postEntity = UtilPost.postFindById(id);
+        Post postEntity = basicFindById(id);
 
         // 권한 체크
-        if (UtilPost.authCheck(postEntity.getId(), principal.getId())) {
+        if (authCheck(postEntity.getUser().getId(), principal.getId())) { // 페이지 주인 id
             // 게시글 삭제
             postRepository.deleteById(id);
         } else {
@@ -62,10 +59,10 @@ public class PostService {
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
 
         // 게시글 찾기
-        Post postEntity = UtilPost.postFindById(id);
+        Post postEntity = basicFindById(id);
 
         // 방문자수 증가
-        UtilPost.visitIncrease(postEntity.getUser().getId());
+        visitIncrease(postEntity.getUser().getId());
 
         // 리턴값 만들기
         postDetailRespDto.setPost(postEntity);
@@ -84,13 +81,13 @@ public class PostService {
         PostDetailRespDto postDetailRespDto = new PostDetailRespDto();
 
         // 게시글 가져오기
-        Post postEntity = UtilPost.postFindById(id);
+        Post postEntity = basicFindById(id);
 
         // 권한체크
-        boolean isAuth = UtilPost.authCheck(postEntity.getId(), principal.getId());
+        boolean isAuth = authCheck(postEntity.getUser().getId(), principal.getId());
 
         // 방문자수 증가
-        UtilPost.visitIncrease(postEntity.getUser().getId());
+        visitIncrease(postEntity.getUser().getId());
 
         // 리턴값 만들기
         postDetailRespDto.setPost(postEntity);
@@ -133,6 +130,9 @@ public class PostService {
             pageNumbers.add(i);
         }
 
+        // 방문자 카운터 증가
+        Visit visitEntity = visitIncrease(pageOwnerId);
+
         PostRespDto postRespDto = new PostRespDto(
                 postsEntity,
                 categoriesEntity,
@@ -140,10 +140,7 @@ public class PostService {
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
                 pageNumbers,
-                0L);
-
-        // 방문자 카운터 증가
-        UtilPost.visitIncrease(pageOwnerId);
+                visitEntity.getTotalCount());
 
         return postRespDto;
     }
@@ -157,6 +154,9 @@ public class PostService {
             pageNumbers.add(i);
         }
 
+        // 방문자 카운터 증가
+        Visit visitEntity = visitIncrease(pageOwnerId);
+
         PostRespDto postRespDto = new PostRespDto(
                 postsEntity,
                 categoriesEntity,
@@ -164,11 +164,50 @@ public class PostService {
                 postsEntity.getNumber() - 1,
                 postsEntity.getNumber() + 1,
                 pageNumbers,
-                0L);
+                visitEntity.getTotalCount());
 
         // 방문자 카운터 증가
-        UtilPost.visitIncrease(pageOwnerId);
+        visitIncrease(pageOwnerId);
 
         return postRespDto;
+    }
+
+    // 게시글 한 건 찾기
+    private Post basicFindById(Integer postId) {
+        Optional<Post> postOp = postRepository.findById(postId);
+        if (postOp.isPresent()) {
+            Post postEntity = postOp.get();
+            return postEntity;
+        } else {
+            throw new CustomApiException("해당 게시글이 존재하지 않습니다");
+        }
+    }
+
+    // 로그인 유저가 게시글의 주인인지 확인
+    private boolean authCheck(Integer principalId, Integer pageOwnerId) {
+        boolean isAuth = false;
+
+        if (principalId == pageOwnerId) {
+            isAuth = true;
+        } else {
+            isAuth = false;
+        }
+        return isAuth;
+    }
+
+    // 방문자수 증가
+    private Visit visitIncrease(Integer pageOwnerId) {
+        Optional<Visit> visitOp = visitRepository.findById(pageOwnerId);
+        if (visitOp.isPresent()) {
+            Visit visitEntity = visitOp.get();
+            Long totalCount = visitEntity.getTotalCount();
+            visitEntity.setTotalCount(totalCount + 1);
+
+            return visitEntity;
+        } else {
+            log.error("겁나 심각", "회원가입할 때 Visit이 안 만들어지는 심각한 오류가 있음");
+            // sms 메시지 전송, email 전송, file 쓰기...
+            throw new CustomException("일시적 문제가 생겼습니다. 관리자에게 문의해주세요");
+        }
     }
 }
