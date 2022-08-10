@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import lombok.RequiredArgsConstructor;
 import site.orangefield.blogsample.config.auth.LoginUser;
 import site.orangefield.blogsample.domain.category.Category;
-import site.orangefield.blogsample.domain.post.Post;
 import site.orangefield.blogsample.domain.user.User;
 import site.orangefield.blogsample.handler.ex.CustomException;
 import site.orangefield.blogsample.service.PostService;
+import site.orangefield.blogsample.web.dto.post.PostDetailRespDto;
 import site.orangefield.blogsample.web.dto.post.PostRespDto;
 import site.orangefield.blogsample.web.dto.post.PostWriteReqDto;
 
@@ -42,8 +42,15 @@ public class PostController {
     @GetMapping("/post/{id}")
     public String detail(@PathVariable Integer id, Model model, @AuthenticationPrincipal LoginUser loginUser) {
 
-        Post postEntity = postService.게시글상세보기(id);
-        model.addAttribute("post", postEntity);
+        PostDetailRespDto postDetailRespDto = null;
+
+        if (loginUser == null) {
+            postDetailRespDto = postService.게시글상세보기(id);
+        } else {
+            postDetailRespDto = postService.게시글상세보기(id, loginUser.getUser());
+        }
+
+        model.addAttribute("data", postDetailRespDto);
 
         return "/post/detail";
     }
